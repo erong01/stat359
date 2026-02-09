@@ -117,6 +117,10 @@ for epoch in range(EPOCHS):
     # Iterate over dataset in batches
     step = 0
     for centers, contexts in loader:
+        # Print progress
+        if step % (len(loader) // 5) == 0 or step == len(loader):
+            print(f'Epoch {epoch+1} {100*step/len(loader):.2f}% complete ({step}/{len(loader)}).')
+
         # Move tensors to device
         centers = centers.to(device)
         contexts = contexts.to(device)
@@ -136,11 +140,9 @@ for epoch in range(EPOCHS):
 
         # Get scalar loss value and add to epoch total
         total_loss += loss.item() 
-
-        # Print progress
+        
+        # Update progress
         step += 1
-        if step % 10000 == 0 or step == len(loader):
-            print(f'Epoch {epoch+1} {100*step/len(loader):.2f}% complete.')
     
     # Print epoch loss
     print(f'Epoch {epoch+1}: Average loss = {total_loss/len(loader)}')
