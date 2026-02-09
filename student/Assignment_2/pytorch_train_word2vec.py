@@ -8,8 +8,8 @@ from tqdm import tqdm
 
 # Hyperparameters
 EMBEDDING_DIM = 100
-BATCH_SIZE = 128  # change it to fit your memory constraints, e.g., 256, 128 if you run out of memory
-EPOCHS = 25
+BATCH_SIZE = 512  # change it to fit your memory constraints, e.g., 256, 128 if you run out of memory
+EPOCHS = 5
 LEARNING_RATE = 0.01
 NEGATIVE_SAMPLES = 5  # Number of negative samples per positive
 
@@ -139,7 +139,7 @@ for epoch in range(EPOCHS):
 
         # Print progress
         step += 1
-        if step % 5000 == 0:
+        if step % 10000 == 0:
             print(f'Epoch {epoch+1} {100*step/len(loader):.2f}% complete.')
     
     # Print epoch loss
