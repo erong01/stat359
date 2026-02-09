@@ -139,7 +139,7 @@ for epoch in range(EPOCHS):
 
         # Print progress
         step += 1
-        if step % 10000 == 0:
+        if step % 10000 == 0 or step == len(loader):
             print(f'Epoch {epoch+1} {100*step/len(loader):.2f}% complete.')
     
     # Print epoch loss
