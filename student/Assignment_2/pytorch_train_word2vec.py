@@ -44,7 +44,7 @@ class Word2Vec(nn.Module):
         return scores
     
     def get_embeddings(self):
-        return self.in_embed.weight.detach().cpu()
+        return self.in_embed.weight.detach().cpu().numpy()
 
 # Load processed data
 with open('student/Assignment_2/processed_data.pkl', 'rb') as f:
