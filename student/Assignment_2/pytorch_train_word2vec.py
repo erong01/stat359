@@ -42,6 +42,9 @@ class Word2Vec(nn.Module):
         # Dot product
         scores = (center_vecs * context_vecs).sum(dim=1)    # (batch size,)
         return scores
+    
+    def get_embeddings(self):
+        return self.in_embed.weight.detach().cpu()
 
 # Load processed data
 with open('student/Assignment_2/processed_data.pkl', 'rb') as f:
