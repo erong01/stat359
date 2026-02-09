@@ -122,7 +122,7 @@ for epoch in range(EPOCHS):
     for centers, contexts in loader:
         # Print progress
         if step % (len(loader) // 5) == 0 or step == len(loader):
-            print(f'Epoch {epoch+1} {100*step/len(loader):.2f}% complete ({step}/{len(loader)}).')
+            print(f'  Epoch {epoch+1} {100*step/len(loader):.2f}% complete ({step}/{len(loader)}).')
 
         # Move tensors to device
         centers = centers.to(device)
