@@ -5,6 +5,7 @@ from bpe_tokenizer import BPETokenizer
 from transformer_model import TinyStoriesConfig, TinyStoriesForCausalLM
 import sys
 import pandas as pd
+from tqdm import tqdm
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Automatically run through a list of prompts with a TinyStories chat model and record outputs")
@@ -23,7 +24,7 @@ def parse_args():
     parser.add_argument("--temperature", type=float, default=0.7, help="Sampling temperature")
     parser.add_argument("--top_p", type=float, default=0.9, help="Nucleus sampling top-p")
     parser.add_argument("--max_gen_len", type=int, default=100, help="Max tokens to generate in response")
-    parser.add_argument("--prompt_file", type=str, default='evaluation_prompts.csv', help="File containing evaluation prompts (one per line)")
+    parser.add_argument("--prompt_file", type=str, default=None, help="File containing evaluation prompts (one per line)")
     parser.add_argument("--output_file", type=str, default="evaluation_outputs.csv", help="File to store model responses")
     return parser.parse_args()
 
@@ -93,12 +94,12 @@ def run_evaluation(model, tokenizer, device, args, user_token_id, assistant_toke
     # Load prompts file
     df = pd.read_csv(args.prompt_file)
     prompts = df['prompt'].tolist()
-    print(f'Loaded {len(prompts)} prompts.')
+    print(f'Loaded {len(prompts)} prompts for evaluation.')
 
     # Get results
     results = {}
 
-    for i, user_input in enumerate(prompts):
+    for user_input in tqdm(prompts, desc='Evaluating prompts', unit='prompt'):
         prompt = f'{args.user_token} {user_input} {args.assistant_token}' # Note that each automated conversation is only one prompt
         response = generate_response(model, tokenizer, device, prompt, args, user_token_id, assistant_token_id)
         results[user_input] = response
@@ -106,7 +107,7 @@ def run_evaluation(model, tokenizer, device, args, user_token_id, assistant_toke
     # Save results as csv
     df['response'] = df['prompt'].map(results)
     df.to_csv(args.output_file)
-    print(f'\nSaved responses to {args.output_file}.')
+    print(f'Saved responses to {args.output_file}.')
 
 def main():
     args = parse_args()
