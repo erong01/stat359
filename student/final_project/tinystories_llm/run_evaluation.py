@@ -106,7 +106,7 @@ def run_evaluation(model, tokenizer, device, args, user_token_id, assistant_toke
         
     # Save results as csv
     df['response'] = df['prompt'].map(results)
-    df.to_csv(args.output_file)
+    df.to_csv(args.output_file, index=False)
     print(f'Saved responses to {args.output_file}.')
 
 def main():
